@@ -29,8 +29,13 @@ public class GameModel
     public static final int DOT = 2;
 
     // ADD YOUR INSTANCE VARIABLES HERE
-    private Point[][] point; //maybe, i'm not quite sure i need this
+    private Point[][] point;
     private int sizeOfGame;
+    private int steps = 0;
+    private int bDotX;
+    private int bDotY;
+
+    Random rand = new Random();
 
     /**
      * Constructor to initialize the model to a given size of board.
@@ -41,7 +46,6 @@ public class GameModel
     public GameModel(int size)
     {
         // REPLACE THE BODY OF THIS METHOD WITH YOUR OWN IMPLEMENTATION
-        //find out what to do with the size
         sizeOfGame = size;
         point = new Point[size][size];
     }
@@ -53,9 +57,46 @@ public class GameModel
      * dot of the board is either AVAILABLE, or SELECTED (with
      * a probability 1/INITIAL_PROBA). The number of steps is reset.
      */
-    public void reset(){
+    public void reset()
+    {
 
         // REPLACE THE BODY OF THIS METHOD WITH YOUR OWN IMPLEMENTATION
+        steps = 0;
+
+        //If the board is even, randomly pick a center point for the blue dot, and place it in the Point array
+        if (sizeOfGame % 2 == 0)
+        {
+            bDotX = rand.nextInt(((sizeOfGame / 2)) - ((sizeOfGame / 2) - 1)  + 1);   //min = ((sizeOfGame / 2) - 1)      max = ((sizeOfGame / 2))
+            bDotY = rand.nextInt(((sizeOfGame / 2)) - ((sizeOfGame / 2) - 1)  + 1);
+            point[bDotY][bDotX] = new Point(bDotX, bDotY);
+            point[bDotY][bDotX].setState(DOT);
+        }
+        else
+        {
+            //Find an algorithm for an odd board's center points
+        }
+
+        //for loop to fill the Point array with points that are either SELECTED or AVAILABLE
+        for (int i = 0; i < sizeOfGame; i++)
+        {
+            for (int j = 0; j < sizeOfGame; j++)
+            {
+                if (point[i][j] != null)
+                {
+                    int selectedPoint = rand.nextInt(9); //If this value is 1, then the point is selected
+                    point[i][j] = new Point(i, j);
+                    if (selectedPoint == 1)
+                    {
+                        point[i][j].setState(SELECTED);
+                    }
+                    else
+                    {
+                        point[i][j].setState(AVAILABLE);
+                    }
+                }
+
+            }
+        }
 
     }
 
@@ -65,9 +106,7 @@ public class GameModel
      *
      * @return the value of the attribute sizeOfGame
      */
-    public  int getSize(){
-        // REPLACE THE BODY OF THIS METHOD WITH YOUR OWN IMPLEMENTATION
-    }
+    public  int getSize() { return sizeOfGame; }
 
     /**
      * returns the current status (AVAILABLE, SELECTED or DOT) of a given dot in the game
@@ -78,11 +117,7 @@ public class GameModel
      *            the y coordinate of the dot
      * @return the status of the dot at location (i,j)
      */
-    public int getCurrentStatus(int i, int j)
-    {
-        // REPLACE THE BODY OF THIS METHOD WITH YOUR OWN IMPLEMENTATION
-        i =
-    }
+    public int getCurrentStatus(int i, int j) { return point[i][j].getState(); }
 
 
     /**
@@ -94,8 +129,10 @@ public class GameModel
      * @param j
      *            the y coordinate of the dot
      */
-    public void select(int i, int j){
-    // REPLACE THE BODY OF THIS METHOD WITH YOUR OWN IMPLEMENTATION
+    public void select(int i, int j)
+    {
+        point[i][j].setState(SELECTED);
+        steps++;
     }
 
     /**
@@ -108,8 +145,10 @@ public class GameModel
      * @param j
      *            the new y coordinate of the blue dot
      */
-    public void setCurrentDot(int i, int j){
-// REPLACE THE BODY OF THIS METHOD WITH YOUR OWN IMPLEMENTATION
+    public void setCurrentDot(int i, int j)
+    {
+        bDotX = i;
+        bDotY = j;
     }
 
     /**
@@ -117,16 +156,12 @@ public class GameModel
      *
      * @return the location of the curent blue dot
      */
-    public Point getCurrentDot(){
-    // REPLACE THE BODY OF THIS METHOD WITH YOUR OWN IMPLEMENTATION
-    }
+    public Point getCurrentDot() { return point[bDotY][bDotX]; }
 
     /**
      * Getter method for the current number of steps
      *
      * @return the current number of steps
      */
-    public int getNumberOfSteps(){
-    // REPLACE THE BODY OF THIS METHOD WITH YOUR OWN IMPLEMENTATION
-    }
+    public int getNumberOfSteps() { return this.steps; }
 }
