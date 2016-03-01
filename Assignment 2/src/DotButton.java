@@ -59,6 +59,7 @@ public class DotButton extends JButton {
 
     public int getRow() {
 // REPLACE THE BODY OF THIS METHOD WITH YOUR OWN IMPLEMENTATION
+        return 0;
     }
 
     /**
@@ -69,5 +70,6 @@ public class DotButton extends JButton {
 
     public int getColumn() {
 // REPLACE THE BODY OF THIS METHOD WITH YOUR OWN IMPLEMENTATION
+        return 0;
     }
 }

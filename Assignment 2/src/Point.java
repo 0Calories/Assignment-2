@@ -12,7 +12,6 @@ public class Point
 {
     private int x;
     private int y;
-    private int state = 0;
 
     /**
      * Constructor
@@ -61,8 +60,6 @@ public class Point
         this.y = y;
     }
 
-    public int getState() { return this.state; }
 
-    public void setState(int s) { this.state = s;}
 
 }

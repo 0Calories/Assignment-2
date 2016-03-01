@@ -3,6 +3,8 @@
  */
 
 import javax.swing.*;
+import java.awt.*;
+
 
 /**
  * The class <b>GameView</b> provides the current view of the entire Game. It extends
@@ -15,6 +17,10 @@ import javax.swing.*;
 public class GameView extends JFrame {
 
     // ADD YOUR INSTANCE VARIABLES HERE
+    private JPanel panel;
+    private BoardView board;
+    private JButton gameReset;
+    private JButton gameQuit;
 
 
     /**
@@ -28,7 +34,26 @@ public class GameView extends JFrame {
 
     public GameView(GameModel model, GameController gameController) {
         // REPLACE THE BODY OF THIS METHOD WITH YOUR OWN IMPLEMENTATION
+        super("TEST!");
+        setBackground(Color.WHITE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+        panel = new JPanel();
+        panel.setBackground(Color.WHITE);
+
+        board = new BoardView(model, gameController);
+        add(board, BorderLayout.CENTER);
+
+        gameReset = new JButton("Reset");
+        gameQuit = new JButton("Quit");
+
+        panel.add(gameReset);
+        panel.add(gameQuit);
+        add(panel,BorderLayout.SOUTH);
+        panel.setSize((model.getSize() * 40) + 100, 400);
+
+        setResizable(false);
+        setSize((model.getSize() * 40) + 100, (model.getSize() * 40) + 100);
     }
 
     /**
@@ -38,7 +63,7 @@ public class GameView extends JFrame {
      */
 
     public BoardView getBoardView(){
-        // REPLACE THE BODY OF THIS METHOD WITH YOUR OWN IMPLEMENTATION
+        return board;
     }
 
 }

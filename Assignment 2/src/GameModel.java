@@ -29,11 +29,10 @@ public class GameModel
     public static final int DOT = 2;
 
     // ADD YOUR INSTANCE VARIABLES HERE
-    private Point[][] point;
+    private int[][] stateArray;
     private int sizeOfGame;
     private int steps = 0;
-    private int bDotX;
-    private int bDotY;
+    private Point bDot;
 
     Random rand = new Random();
 
@@ -47,7 +46,7 @@ public class GameModel
     {
         // REPLACE THE BODY OF THIS METHOD WITH YOUR OWN IMPLEMENTATION
         sizeOfGame = size;
-        point = new Point[size][size];
+        stateArray = new int[size][size];
     }
 
 
@@ -62,36 +61,40 @@ public class GameModel
 
         // REPLACE THE BODY OF THIS METHOD WITH YOUR OWN IMPLEMENTATION
         steps = 0;
+        int bDotX;
+        int bDotY;
 
-        //If the board is even, randomly pick a center point for the blue dot, and place it in the Point array
+        //Randomly pick a center point for the blue dot, and place it in the Point array, depending on whether the board is odd or even
         if (sizeOfGame % 2 == 0)
         {
             bDotX = rand.nextInt(((sizeOfGame / 2)) - ((sizeOfGame / 2) - 1)  + 1);   //min = ((sizeOfGame / 2) - 1)      max = ((sizeOfGame / 2))
             bDotY = rand.nextInt(((sizeOfGame / 2)) - ((sizeOfGame / 2) - 1)  + 1);
-            point[bDotY][bDotX] = new Point(bDotX, bDotY);
-            point[bDotY][bDotX].setState(DOT);
         }
         else
         {
-            //Find an algorithm for an odd board's center points
+            bDotX = rand.nextInt(((sizeOfGame / 2) + 1) - ((sizeOfGame / 2) - 1)  + 1);   //min = ((sizeOfGame / 2) - 1)      max = ((sizeOfGame / 2) + 1)
+            bDotY = rand.nextInt(((sizeOfGame / 2)) - ((sizeOfGame / 2) - 1)  + 1);
         }
+
+        //Create the blue dot instance and set its position
+        stateArray[bDotY][bDotX] = DOT;
+        bDot = new Point(bDotX, bDotY);
 
         //for loop to fill the Point array with points that are either SELECTED or AVAILABLE
         for (int i = 0; i < sizeOfGame; i++)
         {
             for (int j = 0; j < sizeOfGame; j++)
             {
-                if (point[i][j] != null)
+                if (stateArray[i][j] != DOT)
                 {
                     int selectedPoint = rand.nextInt(9); //If this value is 1, then the point is selected
-                    point[i][j] = new Point(i, j);
                     if (selectedPoint == 1)
                     {
-                        point[i][j].setState(SELECTED);
+                        stateArray[i][j] = SELECTED;
                     }
                     else
                     {
-                        point[i][j].setState(AVAILABLE);
+                        stateArray[i][j] = AVAILABLE;
                     }
                 }
 
@@ -117,7 +120,7 @@ public class GameModel
      *            the y coordinate of the dot
      * @return the status of the dot at location (i,j)
      */
-    public int getCurrentStatus(int i, int j) { return point[i][j].getState(); }
+    public int getCurrentStatus(int i, int j) { return stateArray[i][j]; }
 
 
     /**
@@ -131,7 +134,7 @@ public class GameModel
      */
     public void select(int i, int j)
     {
-        point[i][j].setState(SELECTED);
+        stateArray[i][j] = SELECTED;
         steps++;
     }
 
@@ -147,8 +150,7 @@ public class GameModel
      */
     public void setCurrentDot(int i, int j)
     {
-        bDotX = i;
-        bDotY = j;
+        bDot.reset(i, j);
     }
 
     /**
@@ -156,7 +158,7 @@ public class GameModel
      *
      * @return the location of the curent blue dot
      */
-    public Point getCurrentDot() { return point[bDotY][bDotX]; }
+    public Point getCurrentDot() { return bDot; }
 
     /**
      * Getter method for the current number of steps

@@ -17,6 +17,8 @@ import java.awt.event.ActionListener;
 public class GameController implements ActionListener {
 
     // ADD YOUR INSTANCE VARIABLES HERE
+    private GameModel model;
+
 
     /**
      * Constructor used for initializing the controller. It creates the game's view
@@ -35,6 +37,10 @@ public class GameController implements ActionListener {
      */
     public void start(){
 // REPLACE THE BODY OF THIS METHOD WITH YOUR OWN IMPLEMENTATION
+        model = new GameModel(10);
+        GameView game = new GameView(model, this);
+        game.setVisible(true);
+
     }
 
 
